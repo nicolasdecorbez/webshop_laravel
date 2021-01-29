@@ -90,4 +90,4 @@ Ici rien de très intéressant, on remplace les pages auto-générées par nos m
 
 On commence à pouvoir créer de nouveaux produits et à les modifier grâce à l'**admin** donc voici un screen-shot :
 
-![admin]("Page Admin")
+![admin](https://raw.githubusercontent.com/nicolasdecorbez/webshop_laravel/main/images/admin.png "Page Admin")
