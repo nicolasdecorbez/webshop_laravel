@@ -34,19 +34,19 @@ Jusque là, aucune réelle difficulté ne se fait ressentir, on essaye de trvail
 
 Ensuite, nous mettons en place notre configuration **Laravel** afin de se familiariser avec le framework. On commence à créer quelques routes, qu'on supprime rapidement d'ailleurs, mais nous avanceons petit à petit.
 
-Nous arrivons enfin à générer une base fonctionnelle, il faut mainteant tout relier aux bases de données, créer les bonnes migrations, bonnes routes afin que tout s'accorde.
+Nous arrivons enfin à générer une base fonctionnelle, il faut mainteant tout relier à la base de données, créer les bonnes *migrations*, bonnes routes afin que tout s'accorde.
 
 - Dans notre **web.php**, on créé des routes sous cette forme :
 
 ```php
-Route::get('/log', [App\Http\Controllers\HomeController::class, 'index'])->name('log');
+Route::get('/log', [App\Http\Controllers\HomeController::class, 'index'])->name('log');  // Ici nos routes gèrent la redirection vers les pages d'authentification.
 Route::get('/admin', [App\Http\Controllers\HomeController::class, 'admin'])->name('admin');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
-Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
-Route::get('/count', [App\Http\Controllers\BasketController::class, 'show_from_basket'])->name('show_from_basket');
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout'); // Notre fonction logout bidouillée mais parfaitement fonctionnelle
+Route::get('/count', [App\Http\Controllers\BasketController::class, 'show_from_basket'])->name('show_from_basket'); // représente le nombre d'articles dans le panier
 ```
 
-- Puis nos migrations dans le dossier **database/migrations** :
+- Puis nos *migrations* dans le dossier **database/migrations** :
 
 ```PHP
 class CreateUsersTable extends Migration
@@ -58,7 +58,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {   // Ce Schema permet de générer la table Users avec toutes le sinformations qu'un utilisateur va pouvoir rentrer.
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
@@ -66,7 +66,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->boolean('active')->default(0);
+            $table->boolean('active')->default(0);  // Afin de savoir s'il est connecté, ou non
         });
     }
 
@@ -77,7 +77,46 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('users');  // On supprime l'actuelle table pour la recrée ensuite
+    }
+}
+```
+
+- Et enfin nos *Controllers* dans le dossier **app/Http/Controllers** :
+
+```php
+class LoginController extends Controller
+{
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     *
+     */
+
+     protected $redirectTo = RouteServiceProvider::HOME;
+     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+    public function logout(Request $request)  // Ici, je crée ma fonction logout car celle fournie de base marche aléatoirement
+    {
+        $id= Auth::id();
+
+        $disable=User::where('id',$id)
+        ->updateOrCreate(
+          ['id' => $id],['active' => 0]   // On rentre dans la base de données que l'utilisateur se déconnecte
+        );
+
+        Auth::logout();                   // On le déconnecte
+        return redirect('/login');
     }
 }
 ```
@@ -106,16 +145,16 @@ Pour interagir avec la base de données, je vais utiliser des requettes **Ajax**
 form.addEventListener('submit', function(e){
   e.preventDefault();
 
-  const token = document.querySelector('meta[name="csrf-token"]').content;
+  const token = document.querySelector('meta[name="csrf-token"]').content;  // On récupère notre token qui est défini dans notre header.html
 
-  $.ajaxSetup({
+  $.ajaxSetup({       // On setup un header à nos requettes Ajax afin d'éviter de le répetter constamment
     headers: {
       'X-CSRF-TOKEN': token,
     }
   });
 
-  $.ajax({
-
+  $.ajax({            // Ici notre requette Ajax, où on récupère le nom de l'utilisateur s'il est connecté,
+                      // Et on l'affiche en modifiant l'élement avec l'id "users".
     url: url_users,
     type: 'POST',
     data: {
@@ -123,11 +162,13 @@ form.addEventListener('submit', function(e){
     },
 
     success: function (data) {
-      document.getElementById('users').innerHTML = data;
+      document.getElementById('users').innerHTML = data; // Modification du texte
     },
 
     error: function (e) {
-      console.log(e.responseText);
+      console.log(e.responseText); // Renvoie le message d'erreur que contient e.responseText dans la console
     }
   });
 ```
+
+---
