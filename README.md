@@ -22,4 +22,4 @@ Dans un premier temps, avec mon binôme, nous avons créé les maquettes des dif
 
 Jusque là, aucune réelle difficulté ne se fait ressentir, on essaye de trvailler au maximum l'aspect visuel afin de produire un beau rendu.
 
-![screen 1]()
+![screen 1](https://github.com/nicolasdecorbez/webshop_laravel/blob/main/images/article.png?raw=true)
