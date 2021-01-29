@@ -88,6 +88,46 @@ class CreateUsersTable extends Migration
 
 Ici rien de très intéressant, on remplace les pages auto-générées par nos maquettes en prenant soin de bien modifier les liens de redirection, ainsi que d'ajouter quelques fonctionnalités de dernière minute (comptage des produits, affichage du prix sur toutes les pages, etc.)
 
-On commence à pouvoir créer de nouveaux produits et à les modifier grâce à l'**admin** donc voici un screen-shot :
+On commence à pouvoir créer de nouveaux produits et à les modifier grâce à l'**admin** dont voici un screen-shot :
 
 ![admin](https://raw.githubusercontent.com/nicolasdecorbez/webshop_laravel/main/images/admin.png "Page Admin")
+
+---
+
+## Étape 4 : Dynamisme des pages avec JavaScript
+
+Je vais mainteant rendre le site plus léger ; en effet, les redirections PHP impliquent des rechargements de la page, alors si on désire interagir avec plusieurs boutons sur un même pas, ça peut vite devenir ennuyant.
+
+Un autre avantage avec du JS est de pouvoir afficher le panier dynamiquement, ou encore d'afficher une pop-up pour autoriser les cookies. On va également ajouter quelques outils de monitoring dans notre espace *administrateur*.
+
+Pour interagir avec la base de données, je vais utiliser des requettes **Ajax**, dont voici un exemple :
+
+```js
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const token = document.querySelector('meta[name="csrf-token"]').content;
+
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': token,
+    }
+  });
+
+  $.ajax({
+
+    url: url_users,
+    type: 'POST',
+    data: {
+
+    },
+
+    success: function (data) {
+      document.getElementById('users').innerHTML = data;
+    },
+
+    error: function (e) {
+      console.log(e.responseText);
+    }
+  });
+```
