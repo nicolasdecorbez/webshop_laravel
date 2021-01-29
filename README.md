@@ -172,3 +172,9 @@ form.addEventListener('submit', function(e){
 ```
 
 ---
+
+## Conclusion
+
+Ce fut très enrichissant pour moi de travailler sous Laravel car c'est le tout premier framework auquel j'ai pu toucher. Aussi, sa complexité mais aussi sa puissance le rend très intéressant, même s'il est pas rare de s'arracher les cheveux sur un problème de route et/ou de controller.
+
+*Réalisé par Nicolas DECORBEZ et Benoît GROS-DUBOIS - 2020*
