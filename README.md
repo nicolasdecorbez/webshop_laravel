@@ -22,8 +22,8 @@ Dans un premier temps, avec mon binôme, nous avons créé les maquettes des dif
 
 Jusque là, aucune réelle difficulté ne se fait ressentir, on essaye de trvailler au maximum l'aspect visuel afin de produire un beau rendu.
 
-![screen 1](https://raw.githubusercontent.com/nicolasdecorbez/webshop_laravel/main/images/article.png "Article avec option de modification (connecté en admin)")
+![screen 1](https://raw.githubusercontent.com/nicolasdecorbez/webshop_laravel/main/images/menu.png "Menu")
 
 ![screen 2](https://raw.githubusercontent.com/nicolasdecorbez/webshop_laravel/main/images/catalogue.png "Catalogue")
 
-![screen 3](https://raw.githubusercontent.com/nicolasdecorbez/webshop_laravel/main/images/menu.png "Menu")
+![screen 3](https://raw.githubusercontent.com/nicolasdecorbez/webshop_laravel/main/images/article.png "Article avec option de modification (connecté en admin)")
